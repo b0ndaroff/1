@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="src/styles.css?v=1.1.0" />
+    <link rel="stylesheet" href="src/styles.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -60,11 +60,8 @@
           <div class="dice-box">
             <div id="dice" class="dice">—</div>
             <button id="rollBtn" type="button">Кинути кубики</button>
-            <button id="buyBtn" class="secondary-btn" type="button">Купити</button>
-            <button id="declineBtn" class="ghost-btn" type="button">Відмовитися → аукціон</button>
-            <button id="tradeBtn" class="secondary-btn" type="button">Обмін</button>
+            <button id="buyBtn" class="secondary-btn" type="button">Купити / забудувати</button>
             <button id="endTurnBtn" class="ghost-btn" type="button">Завершити хід</button>
-            <small id="timerStatus" class="timer-status">Таймер: —</small>
           </div>
           <div class="players-section">
             <h3>Гравці</h3>
@@ -82,53 +79,12 @@
       <article class="cell">
         <div class="cell-color"></div>
         <strong class="cell-name"></strong>
-        <small class="cell-category"></small>
         <small class="cell-price"></small>
         <div class="tokens"></div>
       </article>
     </template>
 
-    <div id="auctionModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="auctionTitle">
-      <div class="modal-card">
-        <h2 id="auctionTitle">Аукціон</h2>
-        <div id="auctionInfo" class="modal-copy"></div>
-        <input id="auctionBidInput" type="number" min="0" step="10" />
-        <div class="modal-actions">
-          <button id="auctionBidBtn" type="button">Зробити ставку</button>
-          <button id="auctionPassBtn" class="ghost-btn" type="button">Пас</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="tradeModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="tradeTitle">
-      <div class="modal-card trade-card">
-        <h2 id="tradeTitle">Trade Engine</h2>
-        <div class="trade-grid">
-          <section>
-            <h3>Ви віддаєте</h3>
-            <label>Готівка <input id="tradeOfferCash" type="number" min="0" step="10" value="0" /></label>
-            <label>Нерухомість <select id="tradeOfferProperty"></select></label>
-            <label>Action Card <select id="tradeOfferCard"></select></label>
-          </section>
-          <section>
-            <h3>Ви отримуєте</h3>
-            <label>Гравець <select id="tradeTarget"></select></label>
-            <label>Готівка <input id="tradeRequestCash" type="number" min="0" step="10" value="0" /></label>
-            <label>Нерухомість <select id="tradeRequestProperty"></select></label>
-            <label>Action Card <select id="tradeRequestCard"></select></label>
-          </section>
-        </div>
-        <p class="hint">При передачі нерухомості рівні/зірки анулюються, щоб продаж не переносив готові покращення.</p>
-        <div id="tradeStatus" class="modal-copy"></div>
-        <div class="modal-actions">
-          <button id="tradeProposeBtn" type="button">Оновити пропозицію</button>
-          <button id="tradeAcceptBtn" class="secondary-btn" type="button">Accept</button>
-          <button id="tradeCloseBtn" class="ghost-btn" type="button">Закрити</button>
-        </div>
-      </div>
-    </div>
-
     <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
-    <script type="module" src="src/app.js?v=1.1.0"></script>
+    <script type="module" src="src/app.js"></script>
   </body>
 </html>
