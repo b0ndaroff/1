@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Монополія Онлайн з друзями</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">P2P кімнати • грайте з друзями</p>
+          <h1>Монополія Онлайн</h1>
+          <p class="hero-copy">Створіть кімнату, надішліть код друзям і керуйте всією партією просто в браузері.</p>
+        </div>
+        <div class="hero-card">
+          <span>🎲</span>
+          <strong id="roomStatus">Офлайн-режим</strong>
+          <small>Синхронізація через WebRTC, без реєстрації.</small>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel setup-panel" aria-labelledby="setupTitle">
+          <div class="panel-heading">
+            <h2 id="setupTitle">Кімната</h2>
+            <button id="copyLinkBtn" class="ghost-btn" type="button">Скопіювати посилання</button>
+          </div>
+          <div class="room-grid">
+            <label>
+              Ваше імʼя
+              <input id="playerName" type="text" maxlength="18" placeholder="Напр. Олена" />
+            </label>
+            <label>
+              Код кімнати
+              <input id="roomCode" type="text" maxlength="18" placeholder="kyiv-777" />
+            </label>
+          </div>
+          <div class="button-row">
+            <button id="hostBtn" type="button">Створити кімнату</button>
+            <button id="joinBtn" class="secondary-btn" type="button">Приєднатися</button>
+            <button id="localBtn" class="ghost-btn" type="button">Грати локально</button>
+          </div>
+          <p class="hint">Хост керує станом гри. Для онлайн-гри залиште вкладку хоста відкритою.</p>
+        </section>
+
+        <section class="board-wrap" aria-label="Ігрове поле">
+          <div id="board" class="board"></div>
+        </section>
+
+        <aside class="panel side-panel">
+          <div class="panel-heading">
+            <h2>Партія</h2>
+            <span id="turnBadge" class="turn-badge">Очікування</span>
+          </div>
+          <div class="dice-box">
+            <div id="dice" class="dice">—</div>
+            <button id="rollBtn" type="button">Кинути кубики</button>
+            <button id="buyBtn" class="secondary-btn" type="button">Купити / забудувати</button>
+            <button id="endTurnBtn" class="ghost-btn" type="button">Завершити хід</button>
+          </div>
+          <div class="players-section">
+            <h3>Гравці</h3>
+            <div id="playersList" class="players-list"></div>
+          </div>
+          <div class="log-section">
+            <h3>Події</h3>
+            <div id="gameLog" class="game-log" aria-live="polite"></div>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <template id="cellTemplate">
+      <article class="cell">
+        <div class="cell-color"></div>
+        <strong class="cell-name"></strong>
+        <small class="cell-price"></small>
+        <div class="tokens"></div>
+      </article>
+    </template>
+
+    <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>

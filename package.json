@@ -1,0 +1,15 @@
+{
+  "name": "online-monopoly-friends",
+  "version": "1.0.0",
+  "description": "Browser-based online Monopoly-style board game for friends.",
+  "private": true,
+  "scripts": {
+    "start": "vite --host 0.0.0.0",
+    "check": "node --check src/app.js",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "vite": "latest"
+  },
+  "devDependencies": {}
+}
