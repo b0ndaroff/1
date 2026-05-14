@@ -63,6 +63,7 @@ const actionCards = [
   { id: 'triple-dice', name: '3 кубики', type: 'Користь', text: 'Наступний кидок — трьома кубиками.' }
 ];
 
+const LAP_BONUS = 200;
 const TURN_SECONDS = 20;
 const DECISION_SECONDS = 15;
 const AUCTION_SECONDS = 5;
@@ -356,10 +357,15 @@ function rollDice(playerId = state.myId) {
   const dice = player.tripleDice ? [randomDie(), randomDie(), randomDie()] : [randomDie(), randomDie()];
   player.tripleDice = false;
   const oldPosition = player.position;
-  player.position = (player.position + dice.reduce((sum, value) => sum + value, 0)) % state.game.spaces.length;
-  if (player.position < oldPosition) {
-    player.money += 200;
-    addLog(`${player.name} пройшов Старт і отримав ₴200.`);
+  const steps = dice.reduce((sum, value) => sum + value, 0);
+  const absolutePosition = oldPosition + steps;
+  const completedLaps = Math.floor(absolutePosition / state.game.spaces.length);
+  player.position = absolutePosition % state.game.spaces.length;
+  if (completedLaps > 0) {
+    const landedOnStart = player.position === 0;
+    const bonus = LAP_BONUS * completedLaps * (landedOnStart ? 2 : 1);
+    player.money += bonus;
+    addLog(`${player.name} ${landedOnStart ? 'став на Старт' : 'пройшов Старт'} і отримав ₴${bonus}.`);
   }
   state.game.lastDice = dice;
   state.hasRolled = true;
