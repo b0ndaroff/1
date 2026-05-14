@@ -1,44 +1,75 @@
+const categoryStyles = {
+  technology: { label: 'Технології', color: '#2563eb', tint: '#eff6ff', icon: '💻' },
+  auto: { label: 'Авто', color: '#dc2626', tint: '#fef2f2', icon: '🚗' },
+  food: { label: 'Їжа', color: '#ea580c', tint: '#fff7ed', icon: '🍔' },
+  fashion: { label: 'Мода', color: '#db2777', tint: '#fdf2f8', icon: '👟' },
+  entertainment: { label: 'Розваги', color: '#7c3aed', tint: '#f5f3ff', icon: '🎮' },
+  travel: { label: 'Подорожі', color: '#16a34a', tint: '#f0fdf4', icon: '✈️' },
+  energy: { label: 'Енергія', color: '#0891b2', tint: '#ecfeff', icon: '⚡' },
+  finance: { label: 'Фінанси', color: '#ca8a04', tint: '#fefce8', icon: '🏦' },
+  luxury: { label: 'Люкс', color: '#334155', tint: '#f8fafc', icon: '💎' },
+  service: { label: 'Сервіси', color: '#64748b', tint: '#f8fafc', icon: '🛠️' },
+  special: { label: 'Події', color: '#14b8a6', tint: '#f0fdfa', icon: '❔' }
+};
+
 const boardSpaces = [
-  { type: 'corner', name: 'Старт', price: 0, rent: 0, color: '#54e6a6' },
-  { type: 'property', name: 'Поділ', price: 60, rent: 8, color: '#8b5cf6' },
-  { type: 'chance', name: 'Шанс', price: 0, rent: 0, color: '#fbbf24' },
-  { type: 'property', name: 'Львівська кава', price: 80, rent: 10, color: '#8b5cf6' },
-  { type: 'tax', name: 'Податок', price: 100, rent: 0, color: '#ff6b6b' },
-  { type: 'property', name: 'Дніпро', price: 100, rent: 12, color: '#0ea5e9' },
-  { type: 'corner', name: 'Відпочинок', price: 0, rent: 0, color: '#58a6ff' },
-  { type: 'property', name: 'Харків IT', price: 120, rent: 14, color: '#0ea5e9' },
-  { type: 'utility', name: 'Електростанція', price: 150, rent: 18, color: '#94a3b8' },
-  { type: 'property', name: 'Одеса порт', price: 140, rent: 16, color: '#10b981' },
-  { type: 'chance', name: 'Скриня', price: 0, rent: 0, color: '#fbbf24' },
-  { type: 'property', name: 'Карпати', price: 160, rent: 18, color: '#10b981' },
-  { type: 'corner', name: 'Вʼязниця', price: 0, rent: 0, color: '#f97316' },
-  { type: 'property', name: 'Вінниця', price: 180, rent: 20, color: '#ef4444' },
-  { type: 'rail', name: 'Укрзалізниця', price: 200, rent: 25, color: '#64748b' },
-  { type: 'property', name: 'Чернівці', price: 200, rent: 22, color: '#ef4444' },
-  { type: 'tax', name: 'Комуналка', price: 80, rent: 0, color: '#ff6b6b' },
-  { type: 'property', name: 'Київ Центр', price: 240, rent: 28, color: '#ec4899' },
-  { type: 'corner', name: 'Паркінг', price: 0, rent: 0, color: '#a3e635' },
-  { type: 'property', name: 'Печерськ', price: 260, rent: 30, color: '#ec4899' },
-  { type: 'chance', name: 'Шанс', price: 0, rent: 0, color: '#fbbf24' },
-  { type: 'property', name: 'Софіївська', price: 280, rent: 34, color: '#f59e0b' },
-  { type: 'utility', name: 'Водоканал', price: 150, rent: 18, color: '#94a3b8' },
-  { type: 'property', name: 'Майдан', price: 320, rent: 40, color: '#f59e0b' }
+  { type: 'corner', name: 'Старт', price: 0, rent: 0, category: 'special' },
+  { type: 'property', name: 'ByteLab', price: 60, rent: 8, category: 'technology' },
+  { type: 'chance', name: 'Шанс', price: 0, rent: 0, category: 'special' },
+  { type: 'property', name: 'Cloudy', price: 80, rent: 10, category: 'technology' },
+  { type: 'tax', name: 'Податок', price: 100, rent: 0, category: 'service' },
+  { type: 'rail', name: 'HyperRail', price: 200, rent: 25, category: 'service' },
+  { type: 'property', name: 'Volt Motors', price: 100, rent: 12, category: 'auto' },
+  { type: 'property', name: 'AutoDrive', price: 120, rent: 14, category: 'auto' },
+  { type: 'utility', name: 'Електромережа', price: 150, rent: 18, category: 'energy' },
+  { type: 'property', name: 'TurboCar', price: 140, rent: 16, category: 'auto' },
+  { type: 'corner', name: 'Відпочинок', price: 0, rent: 0, category: 'special' },
+  { type: 'property', name: 'Burger Hub', price: 140, rent: 16, category: 'food' },
+  { type: 'chance', name: 'Скриня', price: 0, rent: 0, category: 'special' },
+  { type: 'property', name: 'Pizza Go', price: 160, rent: 18, category: 'food' },
+  { type: 'property', name: 'Coffee Craft', price: 180, rent: 20, category: 'food' },
+  { type: 'rail', name: 'SkyLine', price: 200, rent: 25, category: 'service' },
+  { type: 'property', name: 'SneakerPro', price: 180, rent: 20, category: 'fashion' },
+  { type: 'property', name: 'UrbanWear', price: 200, rent: 22, category: 'fashion' },
+  { type: 'tax', name: 'Комуналка', price: 120, rent: 0, category: 'service' },
+  { type: 'property', name: 'LuxeFit', price: 220, rent: 24, category: 'fashion' },
+  { type: 'corner', name: 'Вʼязниця', price: 0, rent: 0, category: 'special' },
+  { type: 'property', name: 'GameForge', price: 220, rent: 24, category: 'entertainment' },
+  { type: 'chance', name: 'Шанс', price: 0, rent: 0, category: 'special' },
+  { type: 'property', name: 'StreamBox', price: 240, rent: 28, category: 'entertainment' },
+  { type: 'property', name: 'MusicWave', price: 260, rent: 30, category: 'entertainment' },
+  { type: 'rail', name: 'MetroJet', price: 200, rent: 25, category: 'service' },
+  { type: 'property', name: 'AirNova', price: 260, rent: 30, category: 'travel' },
+  { type: 'utility', name: 'Водоканал', price: 150, rent: 18, category: 'energy' },
+  { type: 'property', name: 'HotelGo', price: 280, rent: 34, category: 'travel' },
+  { type: 'property', name: 'CruiseLine', price: 300, rent: 36, category: 'travel' },
+  { type: 'corner', name: 'Паркінг', price: 0, rent: 0, category: 'special' },
+  { type: 'property', name: 'SolarCity', price: 300, rent: 36, category: 'energy' },
+  { type: 'property', name: 'WindWorks', price: 320, rent: 40, category: 'energy' },
+  { type: 'chance', name: 'Скриня', price: 0, rent: 0, category: 'special' },
+  { type: 'property', name: 'PayPoint', price: 340, rent: 44, category: 'finance' },
+  { type: 'rail', name: 'CargoLink', price: 200, rent: 25, category: 'service' },
+  { type: 'property', name: 'NeoBank', price: 360, rent: 48, category: 'finance' },
+  { type: 'tax', name: 'Суперподаток', price: 160, rent: 0, category: 'service' },
+  { type: 'property', name: 'Diamond Mall', price: 380, rent: 52, category: 'luxury' },
+  { type: 'property', name: 'Royal Tower', price: 400, rent: 60, category: 'luxury' }
 ];
 
-const playerColors = ['#54e6a6', '#58a6ff', '#ff7ab6', '#ffd166', '#a78bfa', '#fb7185'];
+const playerColors = ['#ef4444', '#2563eb', '#16a34a', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#111827'];
 const chanceCards = [
-  { text: 'Ви отримали грант для бізнесу: +₴120', amount: 120 },
-  { text: 'Ремонт офісу: -₴90', amount: -90 },
-  { text: 'Друзі скинулися на свято: +₴60', amount: 60 },
-  { text: 'Штраф за паркування: -₴50', amount: -50 },
-  { text: 'Вдалий продаж стартапу: +₴180', amount: 180 }
+  { text: 'Вдалий раунд реклами: +₴120', amount: 120 },
+  { text: 'Терміновий ремонт філії: -₴90', amount: -90 },
+  { text: 'Партнерська виплата: +₴60', amount: 60 },
+  { text: 'Штраф регулятора: -₴50', amount: -50 },
+  { text: 'Ви продали міноритарну частку стартапу: +₴180', amount: 180 }
 ];
 
+const boardSize = 11;
 const pathPositions = [
-  [7, 7], [7, 6], [7, 5], [7, 4], [7, 3], [7, 2], [7, 1],
-  [6, 1], [5, 1], [4, 1], [3, 1], [2, 1], [1, 1],
-  [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7],
-  [2, 7], [3, 7], [4, 7], [5, 7], [6, 7]
+  ...Array.from({ length: boardSize }, (_, index) => [boardSize, boardSize - index]),
+  ...Array.from({ length: boardSize - 2 }, (_, index) => [boardSize - 1 - index, 1]),
+  ...Array.from({ length: boardSize }, (_, index) => [1, index + 1]),
+  ...Array.from({ length: boardSize - 2 }, (_, index) => [index + 2, boardSize])
 ];
 
 const state = {
@@ -129,8 +160,13 @@ function renderBoard() {
     const [row, col] = pathPositions[index];
     cell.style.gridRow = row;
     cell.style.gridColumn = col;
-    cell.querySelector('.cell-color').style.background = space.color;
+    const category = categoryStyles[space.category] || categoryStyles.special;
+    cell.style.setProperty('--category-color', category.color);
+    cell.style.setProperty('--category-tint', category.tint);
+    cell.classList.add(`cell--${space.type}`);
+    cell.querySelector('.cell-color').textContent = category.icon;
     cell.querySelector('.cell-name').textContent = space.name;
+    cell.querySelector('.cell-category').textContent = category.label;
     cell.querySelector('.cell-price').textContent = space.price ? `₴${space.price} • рента ₴${rentFor(space)}` : labelFor(space.type);
 
     if (space.owner) {
@@ -144,7 +180,7 @@ function renderBoard() {
     if (space.houses) {
       const houses = document.createElement('span');
       houses.className = 'house-count';
-      houses.textContent = `🏠×${space.houses}`;
+      houses.textContent = `🏢×${space.houses}`;
       cell.append(houses);
     }
 
@@ -161,12 +197,24 @@ function renderBoard() {
 
   const center = document.createElement('article');
   center.className = 'cell center';
-  center.innerHTML = '<h2>Банк міста</h2><p>Купуйте райони, збирайте ренту, будуйте будинки й не збанкрутуйте.</p>';
+  center.innerHTML = `
+    <div class="center-card">
+      <span class="center-icon">🏙️</span>
+      <h2>Банк монополій</h2>
+      <p>40 клітинок, категорії як на класичному полі: купуйте компанії, збирайте ренту та забудовуйте філії.</p>
+    </div>
+    <div class="category-legend">
+      ${Object.entries(categoryStyles)
+        .filter(([key]) => !['special', 'service'].includes(key))
+        .map(([, category]) => `<span style="--legend-color:${category.color}"><b>${category.icon}</b>${category.label}</span>`)
+        .join('')}
+    </div>
+  `;
   els.board.append(center);
 }
 
 function labelFor(type) {
-  return ({ corner: 'кутова клітинка', chance: 'картка', tax: 'сплатити', utility: 'сервіс', rail: 'транспорт' })[type] || '';
+  return ({ corner: 'кутова клітинка', chance: 'картка події', tax: 'сплатити банку', utility: 'сервіс', rail: 'транспорт' })[type] || '';
 }
 
 function rentFor(space) {
@@ -281,7 +329,7 @@ function buyOrBuild(playerId = state.myId) {
     const cost = Math.ceil(space.price * 0.55);
     player.money -= cost;
     space.houses += 1;
-    addLog(`${player.name} збудував будинок на «${space.name}» за ₴${cost}.`);
+    addLog(`${player.name} відкрив філію на «${space.name}» за ₴${cost}. Рента зростає.`);
   }
   syncAndRender();
 }
