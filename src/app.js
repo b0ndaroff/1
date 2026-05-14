@@ -197,13 +197,14 @@ function renderBoard() {
     cell.style.gridRow = row;
     cell.style.gridColumn = col;
     const category = categoryStyles[space.category] || categoryStyles.special;
+    const side = boardSide(row, col);
     cell.style.setProperty('--category-color', category.color);
     cell.style.setProperty('--category-tint', category.tint);
-    cell.classList.add(`cell--${space.type}`);
-    cell.querySelector('.cell-color').textContent = category.icon;
+    cell.classList.add(`cell--${space.type}`, `cell--${side}`);
+    cell.querySelector('.cell-color').textContent = space.price ? formatShortMoney(space.price) : category.icon;
     cell.querySelector('.cell-name').textContent = space.name;
-    cell.querySelector('.cell-category').textContent = category.label;
-    cell.querySelector('.cell-price').textContent = space.price ? `₴${space.price} • рента ₴${rentFor(space)} • ${stars(space.level)}` : labelFor(space.type);
+    cell.querySelector('.cell-category').textContent = `${category.icon} ${category.label}`;
+    cell.querySelector('.cell-price').textContent = space.price ? `Рента ${formatShortMoney(rentFor(space))}` : labelFor(space.type);
 
     if (space.owner) {
       const owner = state.game.players.find((player) => player.id === space.owner);
@@ -236,19 +237,31 @@ function renderBoard() {
   const center = document.createElement('article');
   center.className = 'cell center';
   center.innerHTML = `
-    <div class="center-card">
-      <span class="center-icon">🏙️</span>
-      <h2>Банк монополій</h2>
-      <p>40 клітинок, категорії як на класичному полі: купуйте компанії, збирайте ренту та забудовуйте філії.</p>
-    </div>
-    <div class="category-legend">
-      ${Object.entries(categoryStyles)
-        .filter(([key]) => !['special', 'service'].includes(key))
-        .map(([, category]) => `<span style="--legend-color:${category.color}"><b>${category.icon}</b>${category.label}</span>`)
-        .join('')}
+    <div class="center-log-shell">
+      <div class="center-log-list">
+        ${state.game.log.slice(0, 12).map((item) => `<div class="center-log-line">${colorizeLog(item)}</div>`).join('')}
+      </div>
+      <div class="center-chatbar"><span>Всім</span><em>Введіть повідомлення</em><b>RIP</b><i>⛶</i><i>⌃</i></div>
     </div>
   `;
   els.board.append(center);
+}
+
+function boardSide(row, col) {
+  if ((row === 1 || row === boardSize) && (col === 1 || col === boardSize)) return 'corner';
+  if (row === 1) return 'top';
+  if (row === boardSize) return 'bottom';
+  if (col === 1) return 'left';
+  return 'right';
+}
+
+function formatShortMoney(value) {
+  if (!value) return '';
+  return `${(value / 100).toLocaleString('uk-UA', { maximumFractionDigits: 1 })}00k`;
+}
+
+function colorizeLog(item) {
+  return item.replace(/^([^—]+—\s*)([^:]+?)(?=\s)/, '$1<span>$2</span>');
 }
 
 function labelFor(type) {
@@ -278,7 +291,7 @@ function renderPlayers() {
     card.innerHTML = `
       <div class="player-top">
         <span class="player-chip"><span class="token" style="background:${player.color}"></span>${player.name}</span>
-        <strong>₴${player.money}</strong>
+        <strong>$ ${player.money.toLocaleString('uk-UA')}k</strong>
       </div>
       <small>${player.bankrupt ? 'Банкрут' : `Позиція: ${state.game.spaces[player.position].name} • Активи: ${holdings}`}</small>
       <div class="card-slots">${cardButtons}${'<span class="empty-slot">Порожньо</span>'.repeat(emptySlots)}</div>
