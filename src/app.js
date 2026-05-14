@@ -63,6 +63,7 @@ const actionCards = [
   { id: 'triple-dice', name: '3 кубики', type: 'Користь', text: 'Наступний кидок — трьома кубиками.' }
 ];
 
+const APP_VERSION = '1.1.0';
 const LAP_BONUS = 200;
 const TURN_SECONDS = 20;
 const DECISION_SECONDS = 15;
@@ -222,7 +223,7 @@ function renderBoard() {
       cell.append(levels);
     }
 
-    cell.addEventListener('click', () => requestAction('upgrade', { spaceIndex: index }) || upgradeSpace(index));
+    cell.addEventListener('click', () => requestAction('upgrade', { spaceIndex: index }) || upgradeSpace(index, localActorId()));
 
     const tokenBox = cell.querySelector('.tokens');
     state.game.players.filter((player) => player.position === index && !player.bankrupt).forEach((player) => {
@@ -738,6 +739,8 @@ function hostRoom() {
   state.role = 'host';
   state.roomId = normalizeRoom(els.roomCode.value);
   els.roomCode.value = state.roomId;
+  state.game = createGame();
+  state.hasRolled = false;
   addPlayer(state.myId, safeName());
   state.game.turnEndsAt = Date.now() + TURN_SECONDS * 1000;
   setupPeer(`monopoly-${state.roomId}`);
@@ -750,6 +753,8 @@ function joinRoom() {
   state.role = 'guest';
   state.roomId = normalizeRoom(els.roomCode.value);
   els.roomCode.value = state.roomId;
+  state.game = createGame();
+  state.hasRolled = false;
   setupPeer();
   els.roomStatus.textContent = `Підключення до ${state.roomId}…`;
   updateUrlRoom();
@@ -826,6 +831,10 @@ function runRemoteAction(action, playerId, details = {}) {
   if (action === 'trade-accept') acceptTrade(playerId);
 }
 
+function localActorId() {
+  return state.role === 'offline' ? currentPlayer()?.id : state.myId;
+}
+
 function requestAction(action, details = {}) {
   if (state.role === 'guest') {
     state.connections[0]?.send({ type: 'action', action, playerId: state.myId, details });
@@ -843,7 +852,7 @@ function startLocalGame() {
   addPlayer('local-2', 'Друг 2');
   addPlayer('local-3', 'Друг 3');
   state.game.turnEndsAt = Date.now() + TURN_SECONDS * 1000;
-  els.roomStatus.textContent = 'Локальна партія';
+  els.roomStatus.textContent = `Локальна партія • v${APP_VERSION}`;
   render();
 }
 
@@ -873,16 +882,16 @@ els.hostBtn.addEventListener('click', hostRoom);
 els.joinBtn.addEventListener('click', joinRoom);
 els.localBtn.addEventListener('click', startLocalGame);
 els.copyLinkBtn.addEventListener('click', copyLink);
-els.rollBtn.addEventListener('click', () => requestAction('roll') || rollDice());
-els.buyBtn.addEventListener('click', () => requestAction('buy') || buyOrBuild());
-els.declineBtn.addEventListener('click', () => requestAction('decline') || declinePurchase());
+els.rollBtn.addEventListener('click', () => requestAction('roll') || rollDice(localActorId()));
+els.buyBtn.addEventListener('click', () => requestAction('buy') || buyOrBuild(localActorId()));
+els.declineBtn.addEventListener('click', () => requestAction('decline') || declinePurchase(localActorId()));
 els.tradeBtn.addEventListener('click', openTrade);
-els.endTurnBtn.addEventListener('click', () => requestAction('end') || endTurn());
+els.endTurnBtn.addEventListener('click', () => requestAction('end') || endTurn(localActorId()));
 els.auctionBidBtn.addEventListener('click', () => requestAction('auction-bid', { amount: Number(els.auctionBidInput.value) }) || placeAuctionBid());
 els.auctionPassBtn.addEventListener('click', () => requestAction('auction-pass') || passAuction());
 els.playersList.addEventListener('click', (event) => {
   const button = event.target.closest('[data-card]');
-  if (button) requestAction('card', { cardId: button.dataset.card }) || useActionCard(button.dataset.card);
+  if (button) requestAction('card', { cardId: button.dataset.card }) || useActionCard(button.dataset.card, localActorId());
 });
 els.tradeTarget.addEventListener('change', () => {
   fillAssetSelect(els.tradeRequestProperty, els.tradeTarget.value);
@@ -892,7 +901,7 @@ els.tradeProposeBtn.addEventListener('click', () => {
   const trade = readTradeForm(state.role === 'offline' ? currentPlayer()?.id : state.myId);
   requestAction('trade-propose', { trade }) || proposeTrade(state.myId, trade);
 });
-els.tradeAcceptBtn.addEventListener('click', () => requestAction('trade-accept') || acceptTrade());
+els.tradeAcceptBtn.addEventListener('click', () => requestAction('trade-accept') || acceptTrade(localActorId()));
 els.tradeCloseBtn.addEventListener('click', closeTrade);
 state.tickTimer = setInterval(() => {
   processTimers();
@@ -900,4 +909,9 @@ state.tickTimer = setInterval(() => {
 }, 500);
 
 hydrateFromUrl();
-render();
+if (!els.roomCode.value) {
+  startLocalGame();
+} else {
+  els.roomStatus.textContent = `Офлайн-режим • v${APP_VERSION}`;
+  render();
+}
